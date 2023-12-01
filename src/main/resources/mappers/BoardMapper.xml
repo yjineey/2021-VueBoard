@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<select id="boardListAll" resultType="BoardVo">
+		select 
+		id,
+		title,
+		writer,
+		DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') as reg_date
+		from board
+		where use_yn='Y';
+	</select>
+	<select id="perPageCount"  parameterType="BoardVo" resultType="BoardVo">
+		select
+		id,
+		title,
+		writer,
+		(select count(fileId) from file f where f.boardId = b.id and f.use_yn='Y') as fileCount,
+		DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') as reg_date
+		from board b
+		where use_yn='Y' 
+		order by id desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id="boardCount" resultType="int">
+		select count(*)
+		from board
+		where use_yn='Y'
+	</select>
+	<select id="searchCount" resultType="int">
+		select count(*)
+		from board
+		where
+		use_yn='Y'
+		and(title like CONCAT('%',#{title},'%')
+		or writer like CONCAT('%',#{writer},'%'))
+		order by id desc;
+	</select>
+	 <insert id="boardInsert" parameterType="BoardVo"
+	  useGeneratedKeys="true" keyProperty="id">
+		insert into board
+		(title
+		,contents
+		,writer)
+		values
+		(#{title}
+		,#{contents}
+		,#{writer})
+	</insert> 
+	<select id="boardView" resultType="BoardVo">
+		select *
+		from board
+		where id=#{id}
+		and use_yn='Y';
+	</select>
+	<update id="boardUpdate" parameterType="BoardVo"
+	 useGeneratedKeys="true" keyProperty="id" >
+		update board
+		set
+		title=#{title},
+		contents= #{contents},
+		writer= #{writer},
+		mod_date= now()
+		where
+		id=#{id}
+	</update>
+	<update id="boardDelete" parameterType="BoardVo">
+		update board 
+		set
+		use_yn='N'
+		where use_yn='Y' and id=#{id}
+	</update>
+<!-- 	<update id="boardDelete" parameterType="BoardVo">
+		update board
+		set
+		use_yn='N'
+		where use_yn='Y'
+		and id=#{id}
+	</update> -->
+	<select id="boardSearch" parameterType="BoardVo" resultType="BoardVo">
+		select
+		id,
+		title,
+		writer,
+		(select count(fileId) from file f where f.boardId = b.id) as fileCount,
+		DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') as reg_date
+		from board b
+		where
+		use_yn='Y'
+		and(title like CONCAT('%',#{title},'%')
+		or writer like CONCAT('%',#{writer},'%'))
+		order by id desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<!-- 게시글 limit offset 조회 -->
+<!-- 	<select id="pageList" parameterType="BoardVo" resultType="BoardVo">
+		select *
+		from board
+		where use_yn='Y'
+		order by id DESC
+		limit 0, #{limit}
+	</select> -->
+
+	<!-- LIMIT 시작데이터, 출력할 데이터갯수 -->
+	<!-- 	limit #{limit} OFFSET #{offset} -->
+	<!-- 	limit #{limit} OFFSET #{offset} -->
+		
+	
+	</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- board -->
+     <typeAliases>
+            <typeAlias alias="BoardVo" type="kr.co.board.vo.BoardVo"></typeAlias>
+            <typeAlias alias="LoginVo" type="kr.co.board.vo.LoginVo"></typeAlias>
+            <typeAlias alias="ReplyVo" type="kr.co.board.vo.ReplyVo"></typeAlias>
+            <typeAlias alias="PageVo" type="kr.co.board.vo.PageVo"></typeAlias>
+            <typeAlias alias="FileVo" type="kr.co.board.vo.FileVo"></typeAlias>
+      </typeAliases>
+
+</configuration>

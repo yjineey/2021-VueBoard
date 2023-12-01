@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="file">
+	<select id="FileListAll" resultType="FileVo">
+		select 
+		f.fileId
+		, f.boardId
+		, f.orgFileName
+		, f.fileName
+		, f.fileSize
+		, f.filePath
+		,  (select count(*) from board b where f.boardId = b.id) as fileCount 
+		from file f
+		where and use_yn='Y';
+	</select>
+	<select id="fileCount" resultType="int">
+		SELECT
+		(select count(*) from file f where f.boardId = b.id ) count
+		FROM board b;
+	</select>
+	<select id="fileView" resultType="FileVo">
+		select *
+		from file
+		where boardId=#{id}
+		and use_yn='Y';
+	</select>
+	<insert id="fileUpload" parameterType="FileVo" >
+          insert into file
+        (	 
+       		 boardId
+            , orgFileName
+            , fileName
+            , fileSize
+            , filePath
+        )
+        VALUES
+        (
+              #{boardId}
+            , #{orgFileName}
+            , #{fileName}
+            , #{fileSize}
+            , #{filePath}
+        )    
+    </insert>
+   	<update id="fileDelete" parameterType="FileVo">
+		update file
+		set
+		use_yn='N'
+		where fileName=#{fileName}
+	</update>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login">
+	
+	<insert id="signUp" parameterType="LoginVo">
+		insert into login
+		(id
+		,password
+		,name
+		,agree
+		,sex
+		,job
+		,grade
+		)
+		values
+		(#{id}
+		,#{password}
+		,#{name}
+		,#{agree}
+		,#{sex}
+		,#{job}
+		,#{grade}
+		)
+	</insert>
+	
+	<select id="loginCheck" parameterType="LoginVo" resultType="LoginVo">
+		select *
+		from login
+		where 
+		id=#{id} 
+		and password=#{password} 
+	</select>
+	
+	
+	<select id="loginCheckId" parameterType="LoginVo" resultType="int">
+		select count(*)
+		from login
+		where id=#{id}
+	</select>
+	
+<!--  	<select id="loginListAll" parameterType="LoginVo" resultType="LoginVo">
+		select *
+		from login
+	</select>
+ -->		
+</mapper>

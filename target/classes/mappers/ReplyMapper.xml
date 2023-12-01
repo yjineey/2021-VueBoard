@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reply">
+
+	<select id="replyListAll" resultType="java.util.HashMap">
+		select *
+		from reply
+		where
+		use_yn='Y';
+	</select>
+	<select id="replyOne" parameterType="int" resultType="ReplyVo" >
+		SELECT *
+		FROM reply
+		WHERE rno = #{rno} 
+	</select>
+	<select id="replyCount" resultType="int">
+		select count(*)
+		from reply
+		where use_yn='Y'
+	</select>
+	<insert id="replyInsert" parameterType="ReplyVo">
+		insert into reply
+		(id
+		,contents
+		,writer)
+		values
+		(#{id}
+		,#{contents}
+		,#{writer})
+	</insert>
+	<update id="replyUpdate" parameterType="ReplyVo">
+		update reply
+		set
+		contents=
+		#{contents},
+		writer= #{writer},
+		mod_date= now()
+		where
+		use_yn=#{use_yn}
+		and
+		rno=#{rno}
+	</update>
+	<update id="replyDelete" parameterType="ReplyVo">
+		update reply
+		set
+		use_yn='N'
+		where use_yn='Y'
+		and rno=#{rno}
+	</update>
+</mapper>
